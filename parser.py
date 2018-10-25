@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from googlesearch import search
 from song import Song
 import requests
 
@@ -23,5 +24,14 @@ else:
     print("Mismatch in song titles and artists. Exiting.")
     exit()
 
-for song in SongList:
-    print(song.title + ", " + song.artist)
+#for song in SongList:
+#    print(song.title + ", " + song.artist)
+
+for song, i in zip(SongList, range(5)):
+    url = list(search(song.title + ' ' + song.artist + ' azlyrics.com', stop=1))[0]
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, 'html.parser')
+    text = soup.find(class_='col-xs-12 col-lg-8 text-center')
+    lyrics = text.find_all('div')[6]
+    song.lyrics = list(lyrics.stripped_strings)
+    print(song.lyrics)
