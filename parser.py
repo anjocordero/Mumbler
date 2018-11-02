@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from googlesearch import search
 from song import Song
 import requests
+import time
 
 page = requests.get('https://www.billboard.com/charts/hot-100')
 soup = BeautifulSoup(page.content, 'html.parser')
@@ -27,11 +28,35 @@ else:
 #for song in SongList:
 #    print(song.title + ", " + song.artist)
 
-for song, i in zip(SongList, range(5)):
+for song, i in zip(SongList, range(100)):
+
+    if i == 40 or i == 80:
+        time.sleep(10)
+    else:  
+        time.sleep(2)
+
     url = list(search(song.title + ' ' + song.artist + ' azlyrics.com', stop=1))[0]
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
     text = soup.find(class_='col-xs-12 col-lg-8 text-center')
-    lyrics = text.find_all('div')[6]
-    song.lyrics = list(lyrics.stripped_strings)
-    print(song.lyrics)
+    found = False
+
+    if text:
+        lyrics = text.find_all('div')[6]
+        song.lyrics = list(lyrics.stripped_strings)
+
+    else:
+        song.lyrics = []
+
+try:
+    f = open('./SongList.txt', 'x')
+    for song in SongList:
+        f.write(song.title)
+        f.write(song.artist)
+        for lyric in song.lyrics:
+            f.write(lyric)
+        f.write("\n")
+
+except FileNotFoundError:
+    print("File already exists.")
+    exit()
