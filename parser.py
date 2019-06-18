@@ -1,62 +1,110 @@
 from bs4 import BeautifulSoup
 from googlesearch import search
 from song import Song
+import os.path
+from os import path
 import requests
 import time
 
-page = requests.get('https://www.billboard.com/charts/hot-100')
-soup = BeautifulSoup(page.content, 'html.parser')
-titles = soup.find_all(class_='chart-list-item__title-text')
-titles.insert(0, soup.find(class_='chart-number-one__title'))
-artists = soup.find_all(class_='chart-list-item__artist')
-artists.insert(0, soup.find(class_='chart-number-one__artist'))
-
+# Global variables to store song details
 SongList = []
+titles = []
+artists = []
 
-if len(titles) == len(artists):
+# Name of directory containing song lyrics
+directoryName = "Lyrics"
 
-    for title, artist in zip(titles, artists):
-        song = Song()
-        song.title = title.get_text(strip=True)
-        song.artist = artist.get_text(strip=True)
-        SongList.append(song)
+# Variables to find lyrics when scraping azlyrics.com
+azlyricsClass = "col-xs-12 col-lg-8 text-center"
+azlyricsDivNumber = 6
 
-else:
-    print("Mismatch in song titles and artists. Exiting.")
-    exit()
 
-#for song in SongList:
-#    print(song.title + ", " + song.artist)
+def create_directory():
+    """Creates directory to store song lyrics"""
 
-for song, i in zip(SongList, range(100)):
+    try:
+        os.mkdir(directoryName)
+    except FileExistsError:
+        pass
 
-    if i == 40 or i == 80:
-        time.sleep(10)
-    else:  
-        time.sleep(2)
 
-    url = list(search(song.title + ' ' + song.artist + ' azlyrics.com', stop=1))[0]
-    page = requests.get(url)
+def read_billboard():
+    """Read top song titles and artists from billboard"""
+
+    page = requests.get('https://www.billboard.com/charts/hot-100')
     soup = BeautifulSoup(page.content, 'html.parser')
-    text = soup.find(class_='col-xs-12 col-lg-8 text-center')
-    found = False
 
-    if text:
-        lyrics = text.find_all('div')[6]
-        song.lyrics = list(lyrics.stripped_strings)
+    # Add artists and titles to list
+
+    for list_item in soup.find_all(class_='chart-list-item'):
+        titles.append(list_item['data-title'])
+        artists.append(list_item['data-artist'])
+
+    # Check if data was read in correctly
+
+    if len(titles) == len(artists) and len(titles) != 0:
+
+        for title, artist in zip(titles, artists):
+            song = Song()
+            song.title = title
+            song.artist = artist
+            SongList.append(song)
 
     else:
-        song.lyrics = []
+        print("Billboard data not found. Exiting.")
+        exit()
 
-try:
-    f = open('./SongList.txt', 'x')
+
+def check_database():
+    """Checks if song lyrics are already downloaded"""
+
     for song in SongList:
-        f.write(song.title)
-        f.write(song.artist)
-        for lyric in song.lyrics:
-            f.write(lyric)
-        f.write("\n")
 
-except FileNotFoundError:
-    print("File already exists.")
-    exit()
+        # Create folder for artist
+        try:
+            os.mkdir(directoryName + "/" + song.artist)
+        except FileExistsError:
+            pass
+
+        # Check if lyric file already exists for this song
+        if path.exists(directoryName + "/" + song.artist + "/" + song.title):
+            song.downloaded = True
+
+
+def write_lyrics(song):
+    try:
+        with open(directoryName + "/" + song.artist + "/" + song.title, 'w') as fh:
+            fh.writelines("%s\n" % line for line in song.lyrics)
+            print("Wrote " + song.title)
+    except FileExistsError:
+        print(song.title + " file already exists.")
+
+
+def find_lyrics():
+    """Search azlyrics for song lyrics and add to database"""
+
+    # for song, i in zip(SongList, range(40)):
+    for song in SongList:
+
+        if not song.downloaded:
+            # Google search for song on azlyrics
+            url = list(search(song.title + ' ' + song.artist + ' azlyrics.com', stop=1))[0]
+            page = requests.get(url)
+            soup = BeautifulSoup(page.content, 'html.parser')
+            text = soup.find(class_=azlyricsClass)
+
+            if text:
+                lyrics = text.find_all('div')[azlyricsDivNumber]
+                song.lyrics = list(lyrics.stripped_strings)
+
+            else:
+                song.lyrics = []
+
+            write_lyrics(song)
+
+
+if __name__ == '__main__':
+    create_directory()
+    read_billboard()
+    check_database()
+    find_lyrics()

@@ -4,3 +4,4 @@ class Song:
         self.title = None
         self.artist = None
         self.lyrics = []
+        self.downloaded = False
