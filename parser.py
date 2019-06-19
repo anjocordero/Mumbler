@@ -23,11 +23,12 @@ directoryName = "Lyrics"
 azlyricsClass = "col-xs-12 col-lg-8 text-center"
 azlyricsDivNumber = 6
 
-# Choose which billboard chart to search from command line, defaults to hot-100
-# chartName taken from billboard.com urls
-
 
 def chartSwitcher():
+    """
+    Choose which billboard chart to search from command line,
+    defaults to hot-100 chartName taken from billboard.com urls
+    """
     if len(sys.argv) > 1:
         chart = sys.argv[1]
     else:
@@ -112,7 +113,7 @@ def write_lyrics(song):
     try:
         with open(directoryName + "/" + chartSwitcher() + "/" + song.artist + "/" + song.title, 'w') as fh:
             fh.writelines("%s\n" % line for line in song.lyrics)
-            print("Wrote " + song.title)
+            print("Wrote " + song.title + " by " + song.artist)
     except FileExistsError:
         print(song.title + " file already exists.")
 
