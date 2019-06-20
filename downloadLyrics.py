@@ -62,7 +62,9 @@ def chartSwitcher():
         chartName = "rock-songs"
 
     else:
-        chartName = "hot-100"
+        print(
+            "No genre specified. Try again with [hot100/pop/rock/latin/hiphop/alternative/edm].")
+        exit(1)
 
     return chartName
 

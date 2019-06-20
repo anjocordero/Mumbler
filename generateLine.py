@@ -1,6 +1,6 @@
 import os
 import warnings
-from parser import chartSwitcher
+from downloadLyrics import chartSwitcher
 
 import createMarkov
 from markovchain import JsonStorage

@@ -5,7 +5,7 @@ import warnings
 from markovchain import JsonStorage
 from markovchain.text import MarkovText, ReplyMode
 
-from parser import chartSwitcher, lyricDirectory
+from downloadLyrics import chartSwitcher, lyricDirectory
 
 markovDir = "Markov"
 rootDir = chartSwitcher()
