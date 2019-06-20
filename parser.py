@@ -27,8 +27,11 @@ azlyricsDivNumber = 6
 def chartSwitcher():
     """
     Choose which billboard chart to search from command line,
-    defaults to hot-100 chartName taken from billboard.com urls
+    defaults to hot-100
+
+    chartName taken from billboard.com urls
     """
+
     if len(sys.argv) > 1:
         chart = sys.argv[1]
     else:
@@ -36,12 +39,25 @@ def chartSwitcher():
 
     if chart == "hot100":
         chartName = "hot-100"
+
     elif chart == "pop":
         chartName = "pop-songs"
+
     elif chart == "latin":
         chartName = "latin-songs"
+
     elif chart == "hiphop":
         chartName = "r-b-hip-hop-songs"
+
+    elif chart == "edm":
+        chartName = "dance-electronic-songs"
+
+    elif chart == "alternative":
+        chartName = "alternative-songs"
+
+    elif chart == "rock":
+        chartName = "rock-songs"
+
     else:
         chartName = "hot-100"
 
@@ -153,7 +169,7 @@ def find_lyrics():
             write_lyrics(song)
 
     if searchEnd == 0:
-        print("All song lyrics downloaded.")
+        print("All " + chartSwitcher() + " lyrics downloaded.")
     else:
         print("Reached search max, quitting for now.")
 

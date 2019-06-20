@@ -1,9 +1,13 @@
 # Mumbler
 
 Procedurally generate lyrics based on Billboard top songs.
-Allows the user to choose between the Hot 100, Pop, Latin, and R&B/Hip-Hop charts.
+Allows the user to choose between the Hot 100, Pop, Latin, EDM, Rock, Alternative,
+and R&B/Hip-Hop charts.
 Scrapes the songs + artists off of Billboard's website, then uses googlesearch
 to download the lyrics of each song on azlyrics.com.
+
+Current usage: `python parser.py [hot100/pop/rock/latin/hiphop/edm/alternative]`
+to download lyrics.
 
 Current step: Inputting the lyrics into a Markov Chain.
 
@@ -12,10 +16,12 @@ Current step: Inputting the lyrics into a Markov Chain.
 - python3
 
 - googlesearch
+
   - install using `pip install google`
 
 - Beautiful Soup 4
-  - Check their documentation page for installation instructions
+
+  - install using `pip install beautifulsoup4`
 
 - markovchain
   - install using `pip install markovchain`
