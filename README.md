@@ -6,10 +6,13 @@ and R&B/Hip-Hop charts.
 Scrapes the songs + artists off of Billboard's website, then uses googlesearch
 to download the lyrics of each song on azlyrics.com.
 
-Current usage: `python parser.py [hot100/pop/rock/latin/hiphop/edm/alternative]`
-to download lyrics.
+Current usage:
 
-Current step: Inputting the lyrics into a Markov Chain.
+To download lyrics:
+`python parser.py [hot100/pop/rock/latin/hiphop/edm/alternative]`
+
+To add current lyrics to database:
+`python markov.py [hot100/pop/rock/latin/hiphop/edm/alternative]`
 
 ## Dependencies
 

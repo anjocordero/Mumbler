@@ -1,10 +1,12 @@
+import os.path
+import sys
+from os import path
+
+import requests
 from bs4 import BeautifulSoup
 from googlesearch import search
+
 from song import Song
-import os.path
-from os import path
-import requests
-import sys
 
 # Global variables to store song details
 SongList = []
@@ -17,9 +19,10 @@ searchMax = 10
 searchEnd = 0
 
 # Name of directory containing song lyrics
-directoryName = "Lyrics"
+lyricDirectory = "Lyrics"
 
 # Variables to find lyrics when scraping azlyrics.com
+# Found through html on azlyrics page for a specific song
 azlyricsClass = "col-xs-12 col-lg-8 text-center"
 azlyricsDivNumber = 6
 
@@ -69,13 +72,13 @@ def create_directory():
 
     # Create directory for all lyrics
     try:
-        os.mkdir(directoryName)
+        os.mkdir(lyricDirectory)
     except FileExistsError:
         pass
 
     # Create directory for specific billboard chart
     try:
-        os.mkdir(directoryName + "/" + chartSwitcher())
+        os.mkdir(lyricDirectory + "/" + chartSwitcher())
     except FileExistsError:
         pass
 
@@ -114,20 +117,22 @@ def check_database():
 
         # Create folder for artist
         try:
-            os.mkdir(directoryName + "/" +
+            os.mkdir(lyricDirectory + "/" +
                      chartSwitcher() + "/" + song.artist)
         except FileExistsError:
             pass
 
         # Check if lyric file already exists for this song
-        if path.exists(directoryName + "/" + chartSwitcher() + "/" + song.artist + "/" + song.title):
+        if path.exists(lyricDirectory + "/" + chartSwitcher() + "/" + song.artist + "/" + song.title):
             song.downloaded = True
 
 
 def write_lyrics(song):
     """Writes a single song's lyrics to a file, separating lines by newlines"""
+
+    # ./lyricDirectory/Chart/Artist/Song
     try:
-        with open(directoryName + "/" + chartSwitcher() + "/" + song.artist + "/" + song.title, 'w') as fh:
+        with open(lyricDirectory + "/" + chartSwitcher() + "/" + song.artist + "/" + song.title, 'w') as fh:
             fh.writelines("%s\n" % line for line in song.lyrics)
             print("Wrote " + song.title + " by " + song.artist)
     except FileExistsError:
