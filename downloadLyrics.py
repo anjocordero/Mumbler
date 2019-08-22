@@ -178,7 +178,7 @@ def find_lyrics():
     if searchEnd == 0:
         print("All " + chartSwitcher() + " lyrics downloaded.")
     else:
-        print("Reached search max, quitting for now.")
+        print("Reached search max, quitting for now. Run this again in a few minutes to continue updating.")
 
 
 if __name__ == '__main__':

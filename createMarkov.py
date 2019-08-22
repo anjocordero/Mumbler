@@ -54,7 +54,7 @@ def main():
             with open(dirName + "/" + fname) as fp:
                 for line in fp:
                     if not line.startswith("["):
-                        markov.data(line, part=False)
+                        markov.data(line, part=True)
 
             print("\tAdded song: " + fname)
 
