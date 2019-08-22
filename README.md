@@ -20,16 +20,17 @@ To add current lyrics to database:
 
 - googlesearch
 
-  - install using `pip install google`
+  - install using `pip3 install google`
+  - installing this first likely will download BeautifulSoup as a dependency
 
 - Beautiful Soup 4
 
-  - install using `pip install beautifulsoup4`
+  - install using `pip3 install beautifulsoup4`
 
 - markovchain
-  - install using `pip install markovchain`
+  - install using `pip3 install markovchain`
 
 Known Issues:
 
 - Currently times out when searching for lyrics, possibly sending too many requests
-  - Being remedied by only allowing 10 searches at once
+  - Remedied by only allowing 10 searches at once then stopping
