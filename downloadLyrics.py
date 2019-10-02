@@ -29,8 +29,7 @@ azlyricsDivNumber = 6
 
 def chartSwitcher():
     """
-    Choose which billboard chart to search from command line,
-    defaults to hot-100
+    Choose which billboard chart to search, when given argument in command line
 
     chartName taken from billboard.com urls
     """
@@ -86,7 +85,14 @@ def create_directory():
 
 
 def read_billboard(chartName):
-    """Read top song titles and artists from billboard"""
+    """
+    Read top song titles and artists from billboard
+
+    TODO: - Add azlyrics search functionality for less reliance on google
+            - current function can run as backup when azlyrics search returns no results
+                - this happens when features are inconsistent across titles
+          - reimplement hot100 functionality after billboard.com layout change
+    """
 
     page = requests.get('https://www.billboard.com/charts/' + chartName)
     soup = BeautifulSoup(page.content, 'html.parser')
@@ -95,7 +101,9 @@ def read_billboard(chartName):
 
     
     if chartSwitcher() == 'hot100':
-        element_class = 'chart-element__information'
+        #element_class = 'chart-element__information'
+        print("hot100 functionality currently unavailable! Try another genre")
+        return
     else:
         element_class = 'chart-list-item'
 
