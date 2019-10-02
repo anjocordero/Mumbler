@@ -93,7 +93,15 @@ def read_billboard(chartName):
 
     # Add artists and titles to list
 
-    for list_item in soup.find_all(class_='chart-list-item'):
+    
+    if chartSwitcher() == 'hot100':
+        element_class = 'chart-element__information'
+    else:
+        element_class = 'chart-list-item'
+
+    # TODO: Add compatibility with hot100 chart hierarchy, old method doesn't work as of 9/25/19 
+
+    for list_item in soup.find_all(class_=element_class):
         titles.append(list_item['data-title'].replace("/", " "))
         artists.append(list_item['data-artist'].replace("/", " "))
 
