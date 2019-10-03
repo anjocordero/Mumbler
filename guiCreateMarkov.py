@@ -48,6 +48,7 @@ def main(chart):
         fileList = [f for f in fileList if not f.startswith(exclude_prefixes)]
 
         # For each artist in chosen directory
+        # split functions accomodate both linux/mac and windows
         print("Found artist: " + dirName.split("/")
               [len(dirName.split("/")) - 1].split("\\")[len(dirName.split("\\")) - 1])
 
