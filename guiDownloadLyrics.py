@@ -104,8 +104,8 @@ def read_billboard(chart):
     # TODO: Add compatibility with hot100 chart hierarchy, old method doesn't work as of 9/25/19 
 
     for list_item in soup.find_all(class_=element_class):
-        titles.append(list_item['data-title'].replace("/", " ").replace("?", ""))
-        artists.append(list_item['data-artist'].replace("/", " ").replace("?", ""))
+        titles.append(list_item['data-title'].replace("/", " ").replace("?", "").replace(":", ""))
+        artists.append(list_item['data-artist'].replace("/", " ").replace("?", "").replace(":", ""))
 
     # Check if data was read in correctly
 

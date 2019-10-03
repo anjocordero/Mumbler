@@ -71,5 +71,7 @@ def main(chart):
         # print(markov(max_length=16, reply_to='sentence start',
         #              reply_mode=ReplyMode.END))
 
-        print("Markov chain build complete!")
         markov.save('%s/%s.json' % (markovDir, rootDir))
+
+    
+    print("Markov chain build complete!")

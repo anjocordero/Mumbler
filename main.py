@@ -63,7 +63,7 @@ def main():
         ("Pop", "pop"),
         ("Rock", "rock"),
         ("Latin", "latin"),
-        ("Hip-hop", "hiphop"),
+        ("Hip-hop / R&B", "hiphop"),
         ("Alternative", "alternative"),
         ("EDM", "edm")
     ]
