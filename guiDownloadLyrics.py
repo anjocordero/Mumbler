@@ -7,6 +7,10 @@ from bs4 import BeautifulSoup
 from googlesearch import search
 
 from song import Song
+from chart import chartSwitcher
+from config import lyricDirectory
+
+import guiCreateMarkov
 
 # Global variables to store song details
 SongList = []
@@ -18,51 +22,11 @@ artists = []
 searchMax = 10
 searchEnd = 0
 
-# Name of directory containing song lyrics
-lyricDirectory = "Lyrics"
-
 # Variables to find lyrics when scraping azlyrics.com
 # Found through html on azlyrics page for a specific song
 azlyricsClass = "col-xs-12 col-lg-8 text-center"
 azlyricsDivNumber = 6
 
-def chartSwitcher(chart):
-    """
-    Choose which billboard chart to search, when given argument in command line
-
-    chartName taken from billboard.com urls
-    """
-
-    if chart == "hot100":
-        chartName = "hot-100"
-
-    elif chart == "pop":
-        chartName = "pop-songs"
-
-    elif chart == "latin":
-        chartName = "latin-songs"
-
-    elif chart == "hiphop":
-        chartName = "r-b-hip-hop-songs"
-
-    elif chart == "edm":
-        chartName = "dance-electronic-songs"
-
-    elif chart == "alternative":
-        chartName = "alternative-songs"
-
-    elif chart == "rock":
-        chartName = "rock-songs"
-
-    elif chart == "country":
-        chartName = "country-songs"
-
-    else:
-        print(
-            "No genre specified. Try again with [hot100/pop/rock/latin/hiphop/alternative/edm/country].")
-        exit(1)
-
-    return chartName
 
 def create_directory(chart):
     """Creates directory to store song lyrics"""
@@ -91,12 +55,12 @@ def read_billboard(chart):
     """
     print("Searching " + chart)
 
-    page = requests.get('https://www.billboard.com/charts/' + chartSwitcher(chart))
+    page = requests.get(
+        'https://www.billboard.com/charts/' + chartSwitcher(chart))
     soup = BeautifulSoup(page.content, 'html.parser')
 
     # Add artists and titles to list
 
-    
     if chart == 'hot100':
         #element_class = 'chart-element__information'
         print("hot100 functionality currently unavailable! Try another genre")
@@ -104,11 +68,13 @@ def read_billboard(chart):
     else:
         element_class = 'chart-list-item'
 
-    # TODO: Add compatibility with hot100 chart hierarchy, old method doesn't work as of 9/25/19 
+    # TODO: Add compatibility with hot100 chart hierarchy, old method doesn't work as of 9/25/19
 
     for list_item in soup.find_all(class_=element_class):
-        titles.append(list_item['data-title'].replace("/", " ").replace("?", "").replace(":", ""))
-        artists.append(list_item['data-artist'].replace("/", " ").replace("?", "").replace(":", ""))
+        titles.append(list_item['data-title'].replace("/",
+                                                      " ").replace("?", "").replace(":", ""))
+        artists.append(
+            list_item['data-artist'].replace("/", " ").replace("?", "").replace(":", ""))
 
     # Check if data was read in correctly
 
@@ -121,8 +87,8 @@ def read_billboard(chart):
             SongList.append(song)
 
     else:
-        print("Billboard data not found. Exiting.")
-        exit()
+        print("Billboard data not found.")
+        # exit()
 
 
 def check_database(chart):
@@ -193,8 +159,10 @@ def find_lyrics(chart):
     else:
         print("Reached search max, quitting for now. Run this again in a few minutes to continue updating.")
 
+
 def main(chart):
     create_directory(chart)
     read_billboard(chart)
     check_database(chart)
     find_lyrics(chart)
+    guiCreateMarkov.main(chart)

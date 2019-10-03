@@ -4,13 +4,8 @@ import warnings
 import guiCreateMarkov
 import markovify
 
-from guiDownloadLyrics import chartSwitcher
-
-# Suppress reg. exp. warning that shows when using markovchain library
-# warnings.simplefilter(action='ignore', category=FutureWarning)
-
-markovDir = "Markov"
-markovScript = "markov.py"
+from chart import chartSwitcher
+from config import markovDir
 
 def main(chart):
 
