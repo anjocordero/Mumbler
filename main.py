@@ -76,8 +76,8 @@ def main():
     # Create radiobutton menu for selecting genre
     for (text, chart), i in zip(CHARTS, range(len(CHARTS))):
         b = tk.Radiobutton(app, text=text, variable=chosen_chart,
-                           value=chart, indicatoron=True)
-        b.grid(row=i, column=0, sticky="w")
+                           value=chart, indicatoron=False)
+        b.grid(row=i, column=0, sticky="ew")
 
     # menu = tk.OptionMenu(app, chosen_chart, *CHARTS)
     # menu.grid(row=0, column=0)
