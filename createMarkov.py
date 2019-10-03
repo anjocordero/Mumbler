@@ -8,7 +8,10 @@ from markovchain.text import MarkovText, ReplyMode
 from downloadLyrics import chartSwitcher, lyricDirectory
 
 markovDir = "Markov"
-rootDir = chartSwitcher()
+rootDir = ""
+
+def init():
+    return chartSwitcher()
 
 # Suppress reg. exp. warning that shows when using markovchain library
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -71,5 +74,6 @@ def main():
 
 
 if __name__ == '__main__':
+    rootDir = init()
     create_directory()
     main()

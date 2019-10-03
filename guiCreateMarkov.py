@@ -49,7 +49,7 @@ def main(chart):
 
         # For each artist in chosen directory
         print("Found artist: " + dirName.split("/")
-              [len(dirName.split("/")) - 1])
+              [len(dirName.split("/")) - 1].split("\\")[len(dirName.split("\\")) - 1])
 
         # For each song by artist
         for fname in fileList:
@@ -70,4 +70,5 @@ def main(chart):
         # print(markov(max_length=16, reply_to='sentence start',
         #              reply_mode=ReplyMode.END))
 
+        print("Markov chain build complete!")
         markov.save('%s/%s.json' % (markovDir, rootDir))
