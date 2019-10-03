@@ -38,5 +38,5 @@ Known Issues:
 
 * Currently incompatible with Billboard's Hot 100 chart, since the HTML structure is different than the rest of their charts.
 
-* Performing an action, then switching genres and downloading lyrics seems to download lyrics into the wrong genre's folder
+* Performing an action, then switching genres and downloading lyrics seems to download lyrics into the wrong genre's folder, but this is not confirmed
 
