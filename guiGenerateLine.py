@@ -2,13 +2,12 @@ import os
 import warnings
 
 import guiCreateMarkov
-from markovchain import JsonStorage
-from markovchain.text import MarkovText, ReplyMode
+import markovify
 
 from guiDownloadLyrics import chartSwitcher
 
 # Suppress reg. exp. warning that shows when using markovchain library
-warnings.simplefilter(action='ignore', category=FutureWarning)
+# warnings.simplefilter(action='ignore', category=FutureWarning)
 
 markovDir = "Markov"
 markovScript = "markov.py"
@@ -18,12 +17,11 @@ def main(chart):
     selectedChart = chartSwitcher(chart)
 
     try:
-        markov = MarkovText.from_file('%s/%s.json' % (markovDir, selectedChart))
+        with open('%s/%s.json' % (markovDir, selectedChart)) as file:
+            markov = markovify.NewlineText.from_json(file.read())
+            print(markov.make_sentence())
     except FileNotFoundError:
-        print("%s.json file not found. Using markov.py to create one first!" %
+        print("%s.json file not found." %
               selectedChart)
-        guiCreateMarkov.create_directory()
-        guiCreateMarkov.main(chart)
-        markov = MarkovText.from_file('%s/%s.json' % (markovDir, selectedChart))
-
-    print(markov())
+        
+    return

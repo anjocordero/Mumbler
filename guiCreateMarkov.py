@@ -2,15 +2,14 @@ import os
 from os import path
 import warnings
 
-from markovchain import JsonStorage
-from markovchain.text import MarkovText, ReplyMode
+import markovify
 
 from guiDownloadLyrics import lyricDirectory, chartSwitcher
 
 markovDir = "Markov" 
 
 # Suppress reg. exp. warning that shows when using markovchain library
-warnings.simplefilter(action='ignore', category=FutureWarning)
+# warnings.simplefilter(action='ignore', category=FutureWarning)
 
 def create_directory():
     """Creates directory for .json markovchain databases"""
@@ -28,11 +27,11 @@ def main(chart):
 
     rootDir = chartSwitcher(chart)
 
-    markov = MarkovText()
+    text = []
 
     # Remove .json if it already exists
-    if path.exists('%s.json' % (rootDir)):
-        os.remove('%s.json' % (rootDir))
+    if path.exists('%s/%s.json' % (markovDir, rootDir)):
+        os.remove('%s/%s.json' % (markovDir, rootDir))
 
     # Iterate through folders in selected genre
     for dirName, subdirList, fileList in os.walk(lyricDirectory + "/" + rootDir):
@@ -58,20 +57,25 @@ def main(chart):
             with open(dirName + "/" + fname) as fp:
                 for line in fp:
                     if not line.startswith("["):
-                        markov.data(line, part=False)
+                        text.append(line)
+                        #markov.data(line, part=False)
 
             print("\tAdded song: " + fname)
 
         # Close data with space?
         # Unsure if necessary, was included in markovchain documentation
-        markov.data('', part=False)
+        # markov.data('', part=False)
 
         # print statements not functional as is
         # print(markov())
         # print(markov(max_length=16, reply_to='sentence start',
         #              reply_mode=ReplyMode.END))
 
-        markov.save('%s/%s.json' % (markovDir, rootDir))
+        #markov.save('%s/%s.json' % (markovDir, rootDir))
 
+    markov = markovify.NewlineText(text)
+
+    with open('%s/%s.json' % (markovDir, rootDir), 'w+') as file:
+        file.write(markov.to_json())
     
     print("Markov chain build complete!")
