@@ -65,7 +65,8 @@ def main():
         ("Latin", "latin"),
         ("Hip-hop / R&B", "hiphop"),
         ("Alternative", "alternative"),
-        ("EDM", "edm")
+        ("EDM", "edm"),
+        ("Country", "country")
     ]
 
     chosen_chart = tk.StringVar(app)
