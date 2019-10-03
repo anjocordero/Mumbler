@@ -54,9 +54,12 @@ def chartSwitcher(chart):
     elif chart == "rock":
         chartName = "rock-songs"
 
+    elif chart == "country":
+        chartName = "country-songs"
+
     else:
         print(
-            "No genre specified. Try again with [hot100/pop/rock/latin/hiphop/alternative/edm].")
+            "No genre specified. Try again with [hot100/pop/rock/latin/hiphop/alternative/edm/country].")
         exit(1)
 
     return chartName
