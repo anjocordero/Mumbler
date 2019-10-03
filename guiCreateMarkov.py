@@ -4,7 +4,8 @@ import warnings
 
 import markovify
 
-from guiDownloadLyrics import lyricDirectory, chartSwitcher
+from chart import chartSwitcher
+from config import lyricDirectory
 
 markovDir = "Markov" 
 
@@ -28,6 +29,8 @@ def main(chart):
     rootDir = chartSwitcher(chart)
 
     text = []
+
+    print("Updating " + chart + " Markov Chain")
 
     # Remove .json if it already exists
     if path.exists('%s/%s.json' % (markovDir, rootDir)):

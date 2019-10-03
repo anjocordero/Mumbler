@@ -4,17 +4,24 @@ import guiDownloadLyrics as downloader
 import guiCreateMarkov as markov
 import guiGenerateLine as generate
 
-# LARGE_FONT = ("Verdana", 12)
-
+from config import CHARTS
 
 class Mumbler(tk.Tk):
     """
-    Class which inherits tkinter base class to accomodate several potential frames
+    Class which inherits tkinter base class to accomodate potentially several frames
     """
 
+    chosen_chart = []
+
     def __init__(self, *args, **kwargs):
+        """
+        Create Start Page and show it
+        """
 
         tk.Tk.__init__(self, *args, **kwargs)
+
+        self.chosen_chart = tk.StringVar(self)
+        self.chosen_chart.set(CHARTS[0][1])
 
         container = tk.Frame(self)
 
@@ -35,10 +42,55 @@ class Mumbler(tk.Tk):
         self.show_frame(StartPage)
 
     def show_frame(self, controller):
+        """
+        Function to show a new tkinter frame(window)
+        """
 
         frame = self.frames[controller]
         frame.tkraise()
 
+    def drawLyric(self):
+        print("hi")
+
+    def updateMarkov(self):
+        """
+        Function to run when Update Markov button is pressed.
+        Downloads lyrics of chosen genre and updates markovify .json
+        """
+        downloader.main(self.chosen_chart.get())
+
+    def generateLyric(self):
+        """
+        Function to run when Generate button is pressed.
+        Prints a single line from guiGenerateLine and prints it
+        to console and on the GUI itself.
+        """
+
+    def draw(self):
+        """
+        Main function of Mumbler, draws menu buttons and pictures
+        """
+
+        # Create radiobutton menu for selecting genre
+        for (text, chart), i in zip(CHARTS, range(len(CHARTS))):
+            b = tk.Radiobutton(self, text=text, variable=self.chosen_chart,
+                            value=chart, indicatoron=False)
+            b.grid(row=i, column=0, sticky="nsew")
+
+        # Alternative to radiobuttons for dropdown menu
+        # menu = tk.OptionMenu(self, self.chosen_chart, *CHARTS)
+        # menu.grid(row=0, column=0)
+
+        # Create function buttons to run scripts
+        downloadButton = tk.Button(
+            self, text="Update Markov", command=self.updateMarkov)
+        downloadButton.grid(row=len(CHARTS), column=1, padx=2, pady=2, sticky="sew")
+
+        generateButton = tk.Button(
+            self, text="Generate!", command=lambda: generate.main(self.chosen_chart.get()))
+        generateButton.grid(row=len(CHARTS), column=2, padx=2, pady=2, sticky="sew")
+
+        self.mainloop()
 
 class StartPage(tk.Frame):
     """
@@ -49,53 +101,20 @@ class StartPage(tk.Frame):
         tk.Frame.__init__(self, parent, controller)
         self.winfo_toplevel().title("Mumbler")
 
+        photo_singer = tk.PhotoImage(file="singer.png")
+        singer_label = tk.Label(image=photo_singer)
+        singer_label.grid(row=len(CHARTS), column=0)
+        singer_label.image = photo_singer
+
+        photo_speech = tk.PhotoImage(file="speechbubble.png")
+        speech_label = tk.Label(image=photo_speech)
+        speech_label.grid(row=0, column=1, rowspan=len(CHARTS), columnspan=2)
+        speech_label.image = photo_speech
+
         # label = tk.Label(self, text="Mumbler", font=LARGE_FONT)
         # label.grid(row=0, column=0)#.pack()
 
 
-def main():
-
-    app = Mumbler()
-
-    CHARTS = [
-        # (Text to appear on button, billboard.com url)
-        ("Hot 100", "hot100"),
-        ("Pop", "pop"),
-        ("Rock", "rock"),
-        ("Latin", "latin"),
-        ("Hip-hop / R&B", "hiphop"),
-        ("Alternative", "alternative"),
-        ("EDM", "edm"),
-        ("Country", "country")
-    ]
-
-    chosen_chart = tk.StringVar(app)
-    # default to pop because hot100 functionality is currently out of date
-    chosen_chart.set("pop")
-
-    # Create radiobutton menu for selecting genre
-    for (text, chart), i in zip(CHARTS, range(len(CHARTS))):
-        b = tk.Radiobutton(app, text=text, variable=chosen_chart,
-                           value=chart, indicatoron=False)
-        b.grid(row=i, column=0, sticky="ew")
-
-    # menu = tk.OptionMenu(app, chosen_chart, *CHARTS)
-    # menu.grid(row=0, column=0)
-
-    downloadButton = tk.Button(
-        app, text="Download", command=lambda: downloader.main(chosen_chart.get()))
-    downloadButton.grid(row=len(CHARTS), column=1, padx=2, pady=2, sticky="ew")
-
-    markovButton = tk.Button(app, text="Create Markov",
-                             command=lambda: markov.main(chosen_chart.get()))
-    markovButton.grid(row=len(CHARTS), column=2, pady=2)
-
-    generateButton = tk.Button(
-        app, text="Generate!", command=lambda: generate.main(chosen_chart.get()))
-    generateButton.grid(row=len(CHARTS), column=3, padx=2, pady=2)
-
-    app.mainloop()
-
-
 if __name__ == "__main__":
-    main()
+    app = Mumbler()
+    app.draw()
