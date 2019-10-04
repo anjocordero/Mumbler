@@ -6,6 +6,9 @@ lyricDirectory = "Lyrics"
 # Name of directory containing Markov chain .jsons
 markovDir = "Markov"
 
+# Font of lyrics on GUI
+LYRIC_FONT = ("Verdana", "12")
+
 # Billboard charts to include
 CHARTS = [
     # (Text to appear on button, billboard.com url)

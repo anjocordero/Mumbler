@@ -4,7 +4,8 @@ import guiDownloadLyrics as downloader
 import guiCreateMarkov as markov
 import guiGenerateLine as generate
 
-from config import CHARTS
+from config import CHARTS, LYRIC_FONT
+
 
 class Mumbler(tk.Tk):
     """
@@ -12,6 +13,7 @@ class Mumbler(tk.Tk):
     """
 
     chosen_chart = []
+    label = []
 
     def __init__(self, *args, **kwargs):
         """
@@ -34,11 +36,8 @@ class Mumbler(tk.Tk):
         self.frames = {}
 
         frame = StartPage(self, container)
-
         self.frames[StartPage] = frame
-
         frame.grid(row=0, column=0)
-
         self.show_frame(StartPage)
 
     def show_frame(self, controller):
@@ -48,9 +47,6 @@ class Mumbler(tk.Tk):
 
         frame = self.frames[controller]
         frame.tkraise()
-
-    def drawLyric(self):
-        print("hi")
 
     def updateMarkov(self):
         """
@@ -66,6 +62,9 @@ class Mumbler(tk.Tk):
         to console and on the GUI itself.
         """
 
+        lyric = generate.main(self.chosen_chart.get())
+        self.label['text'] = lyric
+
     def draw(self):
         """
         Main function of Mumbler, draws menu buttons and pictures
@@ -74,7 +73,7 @@ class Mumbler(tk.Tk):
         # Create radiobutton menu for selecting genre
         for (text, chart), i in zip(CHARTS, range(len(CHARTS))):
             b = tk.Radiobutton(self, text=text, variable=self.chosen_chart,
-                            value=chart, indicatoron=False)
+                               value=chart, indicatoron=False)
             b.grid(row=i, column=0, sticky="nsew")
 
         # Alternative to radiobuttons for dropdown menu
@@ -84,13 +83,16 @@ class Mumbler(tk.Tk):
         # Create function buttons to run scripts
         downloadButton = tk.Button(
             self, text="Update Markov", command=self.updateMarkov)
-        downloadButton.grid(row=len(CHARTS), column=1, padx=2, pady=2, sticky="sew")
+        downloadButton.grid(row=len(CHARTS), column=1,
+                            padx=2, pady=2, sticky="sew")
 
         generateButton = tk.Button(
-            self, text="Generate!", command=lambda: generate.main(self.chosen_chart.get()))
-        generateButton.grid(row=len(CHARTS), column=2, padx=2, pady=2, sticky="sew")
+            self, text="Generate!", command=self.generateLyric)
+        generateButton.grid(row=len(CHARTS), column=2,
+                            padx=2, pady=2, sticky="sew")
 
         self.mainloop()
+
 
 class StartPage(tk.Frame):
     """
@@ -111,8 +113,10 @@ class StartPage(tk.Frame):
         speech_label.grid(row=0, column=1, rowspan=len(CHARTS), columnspan=2)
         speech_label.image = photo_speech
 
-        # label = tk.Label(self, text="Mumbler", font=LARGE_FONT)
-        # label.grid(row=0, column=0)#.pack()
+        parent.label = tk.Label(
+            parent, text="", font=LYRIC_FONT, anchor="nw", wraplength="250")
+        parent.label.grid(row=0, column=1, rowspan=len(CHARTS) -
+                        1, columnspan=2, padx=10, pady=18, sticky="n")
 
 
 if __name__ == "__main__":
