@@ -7,7 +7,7 @@ lyricDirectory = "Lyrics"
 markovDir = "Markov"
 
 # Font of lyrics on GUI
-LYRIC_FONT = ("Verdana", "12")
+LYRIC_FONT = ("Verdana", "16")
 
 # Billboard charts to include
 CHARTS = [

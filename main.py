@@ -12,9 +12,6 @@ class Mumbler(tk.Tk):
     Class which inherits tkinter base class to accomodate potentially several frames
     """
 
-    chosen_chart = []
-    label = []
-
     def __init__(self, *args, **kwargs):
         """
         Create Start Page and show it
@@ -27,7 +24,6 @@ class Mumbler(tk.Tk):
 
         container = tk.Frame(self)
 
-        # container.pack(side="top", fill="both", expand=True)
         container.grid(row=0, column=0)
 
         container.grid_rowconfigure(0, weight=1)
@@ -61,9 +57,8 @@ class Mumbler(tk.Tk):
         Prints a single line from guiGenerateLine and prints it
         to console and on the GUI itself.
         """
-
-        lyric = generate.main(self.chosen_chart.get())
-        self.label['text'] = lyric
+        
+        self.label['text'] = generate.main(self.chosen_chart.get())
 
     def draw(self):
         """
@@ -76,9 +71,11 @@ class Mumbler(tk.Tk):
                                value=chart, indicatoron=False)
             b.grid(row=i, column=0, sticky="nsew")
 
+        """
         # Alternative to radiobuttons for dropdown menu
-        # menu = tk.OptionMenu(self, self.chosen_chart, *CHARTS)
-        # menu.grid(row=0, column=0)
+        menu = tk.OptionMenu(self, self.chosen_chart, *CHARTS)
+        menu.grid(row=0, column=0)
+        """
 
         # Create function buttons to run scripts
         downloadButton = tk.Button(
@@ -114,9 +111,9 @@ class StartPage(tk.Frame):
         speech_label.image = photo_speech
 
         parent.label = tk.Label(
-            parent, text="", font=LYRIC_FONT, anchor="nw", wraplength="250")
+            parent, text="Welcome to Mumbler!", font=LYRIC_FONT, anchor="nw", wraplength="250")
         parent.label.grid(row=0, column=1, rowspan=len(CHARTS) -
-                        1, columnspan=2, padx=10, pady=18, sticky="n")
+                        1, columnspan=2, padx=10, pady=20, sticky="n")
 
 
 if __name__ == "__main__":
