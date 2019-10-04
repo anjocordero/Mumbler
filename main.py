@@ -57,8 +57,9 @@ class Mumbler(tk.Tk):
         Prints a single line from guiGenerateLine and prints it
         to console and on the GUI itself.
         """
-        
+
         self.label['text'] = generate.main(self.chosen_chart.get())
+        self.update()
 
     def draw(self):
         """
@@ -113,7 +114,7 @@ class StartPage(tk.Frame):
         parent.label = tk.Label(
             parent, text="Welcome to Mumbler!", font=LYRIC_FONT, anchor="nw", wraplength="250")
         parent.label.grid(row=0, column=1, rowspan=len(CHARTS) -
-                        1, columnspan=2, padx=10, pady=20, sticky="n")
+                          1, columnspan=2, padx=10, pady=20, sticky="n")
 
 
 if __name__ == "__main__":
