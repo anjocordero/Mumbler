@@ -15,7 +15,7 @@ def main(chart):
     try:
         with open('%s/%s.json' % (markovDir, selectedChart)) as file:
             markov = markovify.NewlineText.from_json(file.read())
-            lyric = markov.make_sentence()
+            lyric = markov.make_sentence(tries=100)
             print(lyric)
             return lyric
     except FileNotFoundError:

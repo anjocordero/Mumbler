@@ -28,13 +28,13 @@ def main(chart):
 
     rootDir = chartSwitcher(chart)
 
-    text = []
-
     print("Updating " + chart + " Markov Chain")
 
     # Remove .json if it already exists
     if path.exists('%s/%s.json' % (markovDir, rootDir)):
         os.remove('%s/%s.json' % (markovDir, rootDir))
+    
+    text = []
 
     # Iterate through folders in selected genre
     for dirName, subdirList, fileList in os.walk(lyricDirectory + "/" + rootDir):
@@ -58,10 +58,11 @@ def main(chart):
         for fname in fileList:
 
             with open(dirName + "/" + fname) as fp:
+
+                # Ignore lines which just state which artist is speaking
                 for line in fp:
                     if not line.startswith("["):
                         text.append(line)
-                        #markov.data(line, part=False)
 
             print("\tAdded song: " + fname)
 
