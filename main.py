@@ -42,11 +42,49 @@ class Mumbler(tk.Tk):
         frame.grid(row=0, column=0)
         self.show_frame(StartPage)
 
+
+
+    def show_frame(self, container):
+        """
+        Function to show a new tkinter frame(window)
+        """
+
+        frame = self.frames[container]
+        frame.tkraise()
+
+
+class StartPage(tk.Frame):
+    """
+    Initial frame of Mumbler app, create more frame classes if you want more
+    windows
+    """
+
+    def __init__(self, parent, container):
+        tk.Frame.__init__(self, parent, container)
+        self.parent = parent
+        self.winfo_toplevel().title("Mumbler")
+
+        photo_singer = tk.PhotoImage(file=ImageFolder + "/singer.png")
+        singer_label = tk.Label(self, image=photo_singer, width=102, height=128)
+        singer_label.grid(row=len(CHARTS), column=0)
+        singer_label.image = photo_singer
+
+        photo_speech = tk.PhotoImage(file=ImageFolder + "/speechbubble.png")
+        speech_label = tk.Label(self, image=photo_speech, width=300, height=200)
+        speech_label.grid(row=0, column=1, rowspan=len(CHARTS), columnspan=2)
+        speech_label.image = photo_speech
+
+        self.label = tk.Label(
+            self, text="Welcome to Mumbler!", font=LYRIC_FONT, anchor="nw",
+            wraplength=250, height=5)
+        self.label.grid(row=0, column=1, rowspan=len(CHARTS) -
+                          1, columnspan=2, padx=10, pady=20, sticky="n")
+
         ### Draw buttons/menu
 
         # Create radiobutton menu for selecting genre
         for (text, chart), i in zip(CHARTS, range(len(CHARTS))):
-            b = tk.Radiobutton(self, text=text, variable=self.chosen_chart,
+            b = tk.Radiobutton(self, text=text, variable=parent.chosen_chart,
                                value=chart, indicatoron=False)
             b.grid(row=i, column=0, sticky="nsew")
 
@@ -67,23 +105,15 @@ class Mumbler(tk.Tk):
         generateButton.grid(row=len(CHARTS), column=2,
                             padx=2, pady=2, sticky="sew")
 
-    def show_frame(self, controller):
-        """
-        Function to show a new tkinter frame(window)
-        """
-
-        frame = self.frames[controller]
-        frame.tkraise()
-
     def updateMarkov(self):
         """
         Function to run when Update Markov button is pressed.
         Downloads lyrics of chosen genre and updates markovify .json
         """
-        self.label['text'] = "Updating " + str(self.chosen_chart.get()) + \
+        self.label['text'] = "Updating " + str(self.parent.chosen_chart.get()) + \
         " chart. Please wait!"
         self.update()
-        downloader.main(self.chosen_chart.get())
+        downloader.main(self.parent.chosen_chart.get())
         self.label['text'] = "Update complete!"
         self.update()
 
@@ -94,36 +124,8 @@ class Mumbler(tk.Tk):
         to console and on the GUI itself.
         """
 
-        self.label['text'] = generate.main(self.chosen_chart.get())
+        self.label['text'] = generate.main(self.parent.chosen_chart.get())
         self.update()
-
-
-class StartPage(tk.Frame):
-    """
-    Initial frame of Mumbler app, create more frame classes if you want more
-    windows
-    """
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, controller)
-        self.winfo_toplevel().title("Mumbler")
-
-        photo_singer = tk.PhotoImage(file=ImageFolder + "/singer.png")
-        singer_label = tk.Label(image=photo_singer, width=102, height=128)
-        singer_label.grid(row=len(CHARTS), column=0)
-        singer_label.image = photo_singer
-
-        photo_speech = tk.PhotoImage(file=ImageFolder + "/speechbubble.png")
-        speech_label = tk.Label(image=photo_speech, width=300, height=200)
-        speech_label.grid(row=0, column=1, rowspan=len(CHARTS), columnspan=2)
-        speech_label.image = photo_speech
-
-        parent.label = tk.Label(
-            parent, text="Welcome to Mumbler!", font=LYRIC_FONT, anchor="nw",
-            wraplength="250")
-        parent.label.grid(row=0, column=1, rowspan=len(CHARTS) -
-                          1, columnspan=2, padx=10, pady=20, sticky="n")
-
 
 if __name__ == "__main__":
     app = Mumbler()
