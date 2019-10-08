@@ -17,27 +17,55 @@ class Mumbler(tk.Tk):
         """
         Create Start Page and show it
         """
-
+        # Call tkinter init function since this inherits it
         tk.Tk.__init__(self, *args, **kwargs)
 
+        # Comment out to allow resizing window
         self.resizable(False, False)
 
+        # Setup for button menu
         self.chosen_chart = tk.StringVar(self)
         self.chosen_chart.set(CHARTS[0][1])
 
+        # Create container for window
         container = tk.Frame(self)
-
         container.grid(row=0, column=0)
-
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
+        # Create list of possible windows
         self.frames = {}
 
+        # Initialize start page (currently only page)
         frame = StartPage(self, container)
         self.frames[StartPage] = frame
         frame.grid(row=0, column=0)
         self.show_frame(StartPage)
+
+        ### Draw buttons/menu
+
+        # Create radiobutton menu for selecting genre
+        for (text, chart), i in zip(CHARTS, range(len(CHARTS))):
+            b = tk.Radiobutton(self, text=text, variable=self.chosen_chart,
+                               value=chart, indicatoron=False)
+            b.grid(row=i, column=0, sticky="nsew")
+
+        """
+        # Alternative to radiobuttons for dropdown menu
+        menu = tk.OptionMenu(self, self.chosen_chart, *CHARTS)
+        menu.grid(row=0, column=0)
+        """
+
+        # Create function buttons to run scripts
+        downloadButton = tk.Button(
+            self, text="Update Markov", command=self.updateMarkov)
+        downloadButton.grid(row=len(CHARTS), column=1,
+                            padx=2, pady=2, sticky="sew")
+
+        generateButton = tk.Button(
+            self, text="Generate Line!", command=self.generateLyric)
+        generateButton.grid(row=len(CHARTS), column=2,
+                            padx=2, pady=2, sticky="sew")
 
     def show_frame(self, controller):
         """
@@ -69,36 +97,6 @@ class Mumbler(tk.Tk):
         self.label['text'] = generate.main(self.chosen_chart.get())
         self.update()
 
-    def draw(self):
-        """
-        Main function of Mumbler, draws menu buttons and pictures
-        """
-
-        # Create radiobutton menu for selecting genre
-        for (text, chart), i in zip(CHARTS, range(len(CHARTS))):
-            b = tk.Radiobutton(self, text=text, variable=self.chosen_chart,
-                               value=chart, indicatoron=False)
-            b.grid(row=i, column=0, sticky="nsew")
-
-        """
-        # Alternative to radiobuttons for dropdown menu
-        menu = tk.OptionMenu(self, self.chosen_chart, *CHARTS)
-        menu.grid(row=0, column=0)
-        """
-
-        # Create function buttons to run scripts
-        downloadButton = tk.Button(
-            self, text="Update Markov", command=self.updateMarkov)
-        downloadButton.grid(row=len(CHARTS), column=1,
-                            padx=2, pady=2, sticky="sew")
-
-        generateButton = tk.Button(
-            self, text="Generate Line!", command=self.generateLyric)
-        generateButton.grid(row=len(CHARTS), column=2,
-                            padx=2, pady=2, sticky="sew")
-
-        self.mainloop()
-
 
 class StartPage(tk.Frame):
     """
@@ -129,4 +127,4 @@ class StartPage(tk.Frame):
 
 if __name__ == "__main__":
     app = Mumbler()
-    app.draw()
+    app.mainloop()
