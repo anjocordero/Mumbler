@@ -4,12 +4,13 @@ import guiDownloadLyrics as downloader
 import guiCreateMarkov as markov
 import guiGenerateLine as generate
 
-from config import CHARTS, LYRIC_FONT
+from config import CHARTS, LYRIC_FONT, ImageFolder
 
 
 class Mumbler(tk.Tk):
     """
-    Class which inherits tkinter base class to accomodate potentially several frames
+    Class which inherits tkinter base class to accomodate potentially several
+    frames
     """
 
     def __init__(self, *args, **kwargs):
@@ -49,7 +50,12 @@ class Mumbler(tk.Tk):
         Function to run when Update Markov button is pressed.
         Downloads lyrics of chosen genre and updates markovify .json
         """
+        self.label['text'] = "Updating " + str(self.chosen_chart.get()) + \
+        " chart. Please wait!"
+        self.update()
         downloader.main(self.chosen_chart.get())
+        self.label['text'] = "Update complete!"
+        self.update()
 
     def generateLyric(self):
         """
@@ -94,25 +100,27 @@ class Mumbler(tk.Tk):
 
 class StartPage(tk.Frame):
     """
-    Initial frame of Mumbler app, create more frame classes if you want more windows
+    Initial frame of Mumbler app, create more frame classes if you want more
+    windows
     """
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, controller)
         self.winfo_toplevel().title("Mumbler")
 
-        photo_singer = tk.PhotoImage(file="singer.png")
+        photo_singer = tk.PhotoImage(file=ImageFolder + "/singer.png")
         singer_label = tk.Label(image=photo_singer)
         singer_label.grid(row=len(CHARTS), column=0)
         singer_label.image = photo_singer
 
-        photo_speech = tk.PhotoImage(file="speechbubble.png")
+        photo_speech = tk.PhotoImage(file=ImageFolder + "/speechbubble.png")
         speech_label = tk.Label(image=photo_speech)
         speech_label.grid(row=0, column=1, rowspan=len(CHARTS), columnspan=2)
         speech_label.image = photo_speech
 
         parent.label = tk.Label(
-            parent, text="Welcome to Mumbler!", font=LYRIC_FONT, anchor="nw", wraplength="250")
+            parent, text="Welcome to Mumbler!", font=LYRIC_FONT, anchor="nw",
+            wraplength="250")
         parent.label.grid(row=0, column=1, rowspan=len(CHARTS) -
                           1, columnspan=2, padx=10, pady=20, sticky="n")
 

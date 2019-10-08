@@ -48,10 +48,12 @@ def read_billboard(chart):
     """
     Read top song titles and artists from billboard
 
-    TODO: - Add azlyrics search functionality for less reliance on google
-            - current function can run as backup when azlyrics search returns no results
+    TODO:   - Add azlyrics search functionality for less reliance on google
+            - current function can run as backup when azlyrics search returns
+            no results
                 - this happens when features are inconsistent across titles
-          - reimplement hot100 functionality after billboard.com layout change
+            - reimplement hot100 functionality after billboard.com layout
+            change
     """
     print("Searching " + chart)
 
@@ -68,13 +70,19 @@ def read_billboard(chart):
     else:
         element_class = 'chart-list-item'
 
-    # TODO: Add compatibility with hot100 chart hierarchy, old method doesn't work as of 9/25/19
+    # TODO: Add compatibility with hot100 chart hierarchy, old method doesn't
+    # work as of 9/25/19
 
     for list_item in soup.find_all(class_=element_class):
-        titles.append(list_item['data-title'].replace("/",
-                                                      " ").replace("?", "").replace(":", ""))
+
+        # TODO: Create new replace function that erases all given characters
+        # in string?
+        titles.append(
+            list_item['data-title'].replace("/", " ")\
+                .replace("?", "").replace(":", ""))
         artists.append(
-            list_item['data-artist'].replace("/", " ").replace("?", "").replace(":", ""))
+            list_item['data-artist'].replace("/", " ")\
+                .replace("?", "").replace(":", ""))
 
     # Check if data was read in correctly
 
@@ -104,16 +112,18 @@ def check_database(chart):
             pass
 
         # Check if lyric file already exists for this song
-        if path.exists(lyricDirectory + "/" + chartSwitcher(chart) + "/" + song.artist + "/" + song.title):
+        if path.exists(lyricDirectory + "/" + chartSwitcher(chart) + "/"
+             + song.artist + "/" + song.title):
             song.downloaded = True
 
 
 def write_lyrics(song, chart):
     """Writes a single song's lyrics to a file, separating lines by newlines"""
 
-    # ./lyricDirectory/Chart/Artist/Song
+    # Current structure is "./lyricDirectory/Chart/Artist/Song"
     try:
-        with open(lyricDirectory + "/" + chartSwitcher(chart) + "/" + song.artist + "/" + song.title, 'w') as fh:
+        with open(lyricDirectory + "/" + chartSwitcher(chart) + "/"
+                    + song.artist + "/" + song.title, 'w') as fh:
             fh.writelines("%s\n" % line for line in song.lyrics)
             print("Wrote " + song.title + " by " + song.artist)
     except FileExistsError:
@@ -137,6 +147,10 @@ def find_lyrics(chart):
                 break
 
             # Google search for song on azlyrics
+
+            # TODO: put following code into try/except block in case HTML
+            # structure of azlyrics changes
+
             url = list(search(song.title + ' ' + song.artist +
                               ' azlyrics.com', stop=1))[0]
             page = requests.get(url)
@@ -157,7 +171,8 @@ def find_lyrics(chart):
     if searchEnd == 0:
         print("All " + chart + " lyrics downloaded.")
     else:
-        print("Reached search max, quitting for now. Run this again in a few minutes to continue updating.")
+        print("Reached search max, quitting for now. Run this again in a few\
+        minutes to continue updating.")
 
 
 def main(chart):

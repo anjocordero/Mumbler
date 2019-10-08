@@ -6,6 +6,9 @@ lyricDirectory = "Lyrics"
 # Name of directory containing Markov chain .jsons
 markovDir = "Markov"
 
+# Name of folder containing images
+ImageFolder = "img"
+
 # Font of lyrics on GUI
 LYRIC_FONT = ("Verdana", "16")
 
