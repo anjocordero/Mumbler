@@ -20,6 +20,8 @@ class Mumbler(tk.Tk):
 
         tk.Tk.__init__(self, *args, **kwargs)
 
+        self.resizable(False, False)
+
         self.chosen_chart = tk.StringVar(self)
         self.chosen_chart.set(CHARTS[0][1])
 
@@ -91,7 +93,7 @@ class Mumbler(tk.Tk):
                             padx=2, pady=2, sticky="sew")
 
         generateButton = tk.Button(
-            self, text="Generate!", command=self.generateLyric)
+            self, text="Generate Line!", command=self.generateLyric)
         generateButton.grid(row=len(CHARTS), column=2,
                             padx=2, pady=2, sticky="sew")
 
@@ -109,12 +111,12 @@ class StartPage(tk.Frame):
         self.winfo_toplevel().title("Mumbler")
 
         photo_singer = tk.PhotoImage(file=ImageFolder + "/singer.png")
-        singer_label = tk.Label(image=photo_singer)
+        singer_label = tk.Label(image=photo_singer, width=102, height=128)
         singer_label.grid(row=len(CHARTS), column=0)
         singer_label.image = photo_singer
 
         photo_speech = tk.PhotoImage(file=ImageFolder + "/speechbubble.png")
-        speech_label = tk.Label(image=photo_speech)
+        speech_label = tk.Label(image=photo_speech, width=300, height=200)
         speech_label.grid(row=0, column=1, rowspan=len(CHARTS), columnspan=2)
         speech_label.image = photo_speech
 
