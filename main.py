@@ -76,9 +76,9 @@ class StartPage(tk.Frame):
 
         self.label = tk.Label(
             self, text="Welcome to Mumbler!", font=LYRIC_FONT, anchor="nw",
-            wraplength=250, height=6)
-        self.label.grid(row=0, column=1, rowspan=len(CHARTS) -
-                          1, columnspan=2, padx=10, pady=20, sticky="n")
+            wraplength=250, height=5)
+        self.label.grid(row=0, column=1, rowspan=len(CHARTS), 
+            columnspan=2, padx=10, pady=20, sticky="n")
 
         ### Draw buttons/menu
 
