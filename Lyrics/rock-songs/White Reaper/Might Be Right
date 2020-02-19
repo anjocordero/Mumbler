@@ -1,0 +1,7 @@
+if  ( /Android|webOS|iPhone|iPod|iPad|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) 
+  {
+     document.getElementById('azmxmbanner').style.display='block';
+     document.write('<div style="margin-left: auto; margin-right: auto;">'+
+  '<iframe scrolling="no" style="border: 0px none; overflow:hidden;" src="//adv.mxmcdn.net/br/t1.0/m_js/e_0/sn_0/l_19232349/su_0/rs_0/tr_3vUCACwYCy1T0Fy5f21STQ0TKPRZsRVcPaqLRoIqwsK7rTsQbK-F-VFcoPtUB-TPEAZkNPvpr3TaVxZRt5LRjZOE2B0QVxYNCDB0VV7vQ24FRBaGH0tQtq3Y_iUWDJAvWi77j0UL9fHTC8OXY3LIJFXYqn7pm7XkHHVdqjTarPAQgSrzmOwxSA-e-Q0pL85W3am7URSOhIT8czPEqDt96ZAcf9h-fWhfLGTtBFoP2P27qaQ16tqIW_xPcji4X4ZuZeooMWFRj_bSVHewYjGpKNf7DgfKo8oKK-TbbsFVaBKY_un1oQ98XF6FN_ZdkGfToWcMeZ9gqTsN0hwWtGfY_Y59_nfXiXOm8jXiDMMrq1mQRsIkLf_K6OffRxAH8Igcjz9I0izA5QArhReZYeUHC_m3vwXeKoB4Zn6351rggWceu2AAgUx4gOxUGyh64HG3tW9dcs4I_xuGzg/" width="290px" height="50px"></iframe>'+
+  '</div>');
+   }
