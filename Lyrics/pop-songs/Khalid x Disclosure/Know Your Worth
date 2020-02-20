@@ -1,0 +1,7 @@
+if  ( /Android|webOS|iPhone|iPod|iPad|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) 
+  {
+     document.getElementById('azmxmbanner').style.display='block';
+     document.write('<div style="margin-left: auto; margin-right: auto;">'+
+  '<iframe scrolling="no" style="border: 0px none; overflow:hidden;" src="//adv.mxmcdn.net/br/t1.0/DFd9gOgOCmSkm2rJwzJTH0h7MhmH9tbW/24pKHf8q53RR2n8vE0b0h4eyM+2npkkedcgqcCJRqS4JqCZdim0I0UIPD9sjLz+jw0h2a2hSLXlCJt9G8wR2nHjqVb+yG3QvgWBZ3VYhX1bqUk1UAyQtlGHOlGLdPfhr2yuHrLLPqM=/?artist_name=Khalid&track_name=Know+Your+Worth&s=a76e7039e860a91bf99cb24922c00f23" width="290px" height="50px"></iframe>'+
+  '</div>');
+   }
